@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מפלצת הצלילים - פתח ושווא</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74b9ff, #a29bfe);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #2d3436;
+            overflow: hidden;
+        }
+        .game-container {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            color: #0984e3;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .score-board {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #636e72;
+            font-weight: bold;
+        }
+        .monster {
+            font-size: 80px;
+            margin: 10px 0;
+            transition: transform 0.2s;
+        }
+        .word-card {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 25px 0;
+            color: #2d3436;
+            background: #dfe6e9;
+            padding: 15px;
+            border-radius: 15px;
+            letter-spacing: 2px;
+        }
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        button {
+            font-size: 22px;
+            font-weight: bold;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.1s, background 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .btn-patach {
+            background-color: #00b894;
+        }
+        .btn-shva {
+            background-color: #e17055;
+        }
+        .feedback {
+            font-size: 22px;
+            height: 35px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .success { color: #00b894; }
+        .error { color: #d63031; }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>מפלצת הצלילים הרעבה 👾</h1>
+        <div class="score-board">ניקוד: <span id="score">0</span> 🌟</div>
+        
+        <div class="monster" id="monsterEmoji">👾</div>
+        <div class="word-card" id="wordDisplay">טוען...</div>
+        
+        <div class="buttons-container">
+            <button class="btn-patach" onclick="checkAnswer('פתח')">פתח ַ</button>
+            <button class="btn-shva" onclick="checkAnswer('שווא')">שווא ְ</button>
+        </div>
+
+        <div class="feedback" id="feedbackText"></div>
+    </div>
+
+    <script>
+        const questions = [
+            { word: "כַּד", type: "פתח" },
+            { word: "שְׁמָר", type: "שווא" },
+            { word: "בַּיִת", type: "פתח" },
+            { word: "פַּרְפַּר", type: "פתח" },
+            { word: "יְלָדִים", type: "שווא" },
+            { word: "גָּמָל", type: "פתח" },
+            { word: "סְפָרִים", type: "שווא" },
+            { word: "דַּבְּרָן", type: "פתח" },
+            { word: "תְּמוּנָה", type: "שווא" },
+            { word: "נַעַל", type: "פתח" }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+
+        const wordDisplay = document.getElementById("wordDisplay");
+        const scoreDisplay = document.getElementById("score");
+        const feedbackText = document.getElementById("feedbackText");
+        const monsterEmoji = document.getElementById("monsterEmoji");
+
+        function loadQuestion() {
+            if (currentIndex >= questions.length) {
+                currentIndex = 0;
+            }
+            wordDisplay.textContent = questions[currentIndex].word;
+            feedbackText.textContent = "";
+            monsterEmoji.textContent = "👾";
+        }
+
+        function checkAnswer(selectedType) {
+            const currentQuestion = questions[currentIndex];
+            
+            if (selectedType === currentQuestion.type) {
+                score += 10;
+                scoreDisplay.textContent = score;
+                feedbackText.textContent = "כל הכבוד! אלוף שאתה! 🎉";
+                feedbackText.className = "feedback success";
+                monsterEmoji.textContent = "🥳";
+            } else {
+                feedbackText.textContent = "אוי, לא נורא, נסה שוב! אלוף שאתה מנסה ❤️";
+                feedbackText.className = "feedback error";
+                monsterEmoji.textContent = "🥺";
+            }
+
+            currentIndex++;
+            setTimeout(loadQuestion, 1500);
+        }
+
+        loadQuestion();
+    </script>
+
+</body>
+</html>
